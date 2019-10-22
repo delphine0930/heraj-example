@@ -7,6 +7,16 @@ A collection of examples using heraj
 - heraj : 1.2.1
 - jdk : 7
 
+## Usage
+
+### Import
+
+- Eclipse : Project explorer -> Import -> Existing Gradle Project -> Select heraj-example -> Finish
+
+### Run
+
+All of the example class file have main method. Call it.
+
 ## Contribution
 
 All java files should be formatted according to [Google's Java style guide](http://google.github.io/styleguide/javaguide.html).\
