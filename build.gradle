@@ -2,17 +2,29 @@
  * @copyright defined in LICENSE.txt
  */
 
-apply plugin: 'java'
-
-sourceCompatibility = sourceJavaVersion
-targetCompatibility = targetJavaVersion
-
-repositories {
-  jcenter()
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
 }
 
-dependencies {
-  implementation "io.aergo:heraj-transport:${herajVersion}"
-  implementation "io.aergo:heraj-wallet:${herajVersion}"
-  implementation "io.aergo:heraj-smart-contract:${herajVersion}"
+subprojects {
+  apply plugin: 'java'
+
+  sourceCompatibility = sourceJavaVersion
+  targetCompatibility = targetJavaVersion
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+
+  dependencies {
+    implementation "io.aergo:heraj-transport:${herajVersion}"
+    implementation "io.aergo:heraj-wallet:${herajVersion}"
+    implementation "io.aergo:heraj-smart-contract:${herajVersion}"
+  }
 }
