@@ -20,7 +20,7 @@ import hera.key.AergoKey;
 import hera.keystore.InMemoryKeyStore;
 import hera.keystore.KeyStore;
 import hera.wallet.WalletApi;
-import hera.wallet.WalletFactory;
+import hera.wallet.WalletApiFactory;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -35,11 +35,11 @@ public class ExecutingSmartContract extends AbstractExample {
     keyStore.save(authentication, key);
 
     // make wallet api
-    WalletApi walletApi = new WalletFactory().create(keyStore);
+    WalletApi walletApi = new WalletApiFactory().create(keyStore);
 
     // make aergo client
     AergoClient aergoClient = new AergoClientBuilder()
-        .withEndpoint(hostname)
+        .withEndpoint(endpoint)
         .withNonBlockingConnect()
         .build();
 

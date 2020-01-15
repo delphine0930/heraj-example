@@ -4,29 +4,15 @@
 
 package hera.example.wallet.keystore;
 
-import hera.api.model.AccountAddress;
 import hera.api.model.Authentication;
 import hera.api.model.EncryptedPrivateKey;
 import hera.api.model.Identity;
-import hera.api.model.RawTransaction;
-import hera.api.model.Transaction;
 import hera.key.AergoKey;
+import hera.key.Signer;
 import hera.keystore.KeyStore;
 import java.util.List;
 
 public class CustomKeyStore implements KeyStore {
-
-  @Override
-  public AccountAddress unlock(Authentication authentication) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public boolean lock(Authentication authentication) {
-    // TODO Auto-generated method stub
-    return false;
-  }
 
   @Override
   public void save(Authentication authentication, AergoKey key) {
@@ -35,7 +21,19 @@ public class CustomKeyStore implements KeyStore {
   }
 
   @Override
-  public EncryptedPrivateKey export(Authentication authentication) {
+  public Signer load(Authentication authentication) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void remove(Authentication authentication) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public EncryptedPrivateKey export(Authentication authentication, String password) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -50,12 +48,6 @@ public class CustomKeyStore implements KeyStore {
   public void store(String path, char[] password) {
     // TODO Auto-generated method stub
 
-  }
-
-  @Override
-  public Transaction sign(AccountAddress unlocked, RawTransaction rawTransaction) {
-    // TODO Auto-generated method stub
-    return null;
   }
 
 }

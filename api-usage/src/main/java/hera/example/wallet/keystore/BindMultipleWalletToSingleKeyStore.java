@@ -12,7 +12,7 @@ import hera.key.AergoKeyGenerator;
 import hera.keystore.InMemoryKeyStore;
 import hera.keystore.KeyStore;
 import hera.wallet.WalletApi;
-import hera.wallet.WalletFactory;
+import hera.wallet.WalletApiFactory;
 
 public class BindMultipleWalletToSingleKeyStore extends AbstractExample {
 
@@ -34,8 +34,8 @@ public class BindMultipleWalletToSingleKeyStore extends AbstractExample {
     System.out.println("Key2: " + key2);
 
     // create walletapis
-    WalletApi walletApi1 = new WalletFactory().create(keyStore);
-    WalletApi walletApi2 = new WalletFactory().create(keyStore);
+    WalletApi walletApi1 = new WalletApiFactory().create(keyStore);
+    WalletApi walletApi2 = new WalletApiFactory().create(keyStore);
 
     // unlock and bind account to each wallet api
     walletApi1.unlock(authentication1);

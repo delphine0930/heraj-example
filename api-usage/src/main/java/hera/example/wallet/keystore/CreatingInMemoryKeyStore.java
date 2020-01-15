@@ -8,7 +8,7 @@ import hera.example.AbstractExample;
 import hera.keystore.InMemoryKeyStore;
 import hera.keystore.KeyStore;
 import hera.wallet.WalletApi;
-import hera.wallet.WalletFactory;
+import hera.wallet.WalletApiFactory;
 
 public class CreatingInMemoryKeyStore extends AbstractExample {
 
@@ -19,7 +19,7 @@ public class CreatingInMemoryKeyStore extends AbstractExample {
     System.out.println("Keystore: " + keyStore);
 
     // create walletapi
-    WalletApi walletApi = new WalletFactory().create(keyStore);
+    WalletApi walletApi = new WalletApiFactory().create(keyStore);
     System.out.println("Walletapi with keystore: " + walletApi);
   }
 

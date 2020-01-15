@@ -16,7 +16,7 @@ import hera.client.AergoClientBuilder;
 import hera.example.AbstractExample;
 import hera.keystore.InMemoryKeyStore;
 import hera.wallet.WalletApi;
-import hera.wallet.WalletFactory;
+import hera.wallet.WalletApiFactory;
 import java.util.List;
 
 public class QueryingChainInfo extends AbstractExample {
@@ -24,11 +24,11 @@ public class QueryingChainInfo extends AbstractExample {
   @Override
   public void run() {
     // make wallet api
-    WalletApi walletApi = new WalletFactory().create(new InMemoryKeyStore());
+    WalletApi walletApi = new WalletApiFactory().create(new InMemoryKeyStore());
 
     // make aergo client
     AergoClient aergoClient = new AergoClientBuilder()
-        .withEndpoint(hostname)
+        .withEndpoint(endpoint)
         .withNonBlockingConnect()
         .build();
 

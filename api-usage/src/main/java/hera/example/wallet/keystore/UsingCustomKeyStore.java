@@ -7,7 +7,7 @@ package hera.example.wallet.keystore;
 import hera.example.AbstractExample;
 import hera.keystore.KeyStore;
 import hera.wallet.WalletApi;
-import hera.wallet.WalletFactory;
+import hera.wallet.WalletApiFactory;
 
 public class UsingCustomKeyStore extends AbstractExample {
 
@@ -18,8 +18,8 @@ public class UsingCustomKeyStore extends AbstractExample {
     System.out.println("Keystore: " + keyStore);
 
     // create walletapi
-    WalletApi walletApi = new WalletFactory().create(keyStore);
-    System.out.println("Walletapi with keystore: " + walletApi);
+    WalletApi walletApi = new WalletApiFactory().create(keyStore);
+    System.out.println("Walletapi with custom keystore: " + walletApi);
   }
 
   public static void main(String[] args) throws Exception {

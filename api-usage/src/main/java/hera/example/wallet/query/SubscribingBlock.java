@@ -13,18 +13,18 @@ import hera.client.AergoClientBuilder;
 import hera.example.AbstractExample;
 import hera.keystore.InMemoryKeyStore;
 import hera.wallet.WalletApi;
-import hera.wallet.WalletFactory;
+import hera.wallet.WalletApiFactory;
 
 public class SubscribingBlock extends AbstractExample {
 
   @Override
   public void run() throws Exception {
     // make wallet api
-    WalletApi walletApi = new WalletFactory().create(new InMemoryKeyStore());
+    WalletApi walletApi = new WalletApiFactory().create(new InMemoryKeyStore());
 
     // make aergo client
     AergoClient aergoClient = new AergoClientBuilder()
-        .withEndpoint(hostname)
+        .withEndpoint(endpoint)
         .withNonBlockingConnect()
         .build();
 
