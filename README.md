@@ -15,11 +15,47 @@ A collection of examples using heraj
 
 ### Setup aergokey
 
-#### Install aergo connect to chrome
+#### Create & Export Account
 
-1. Go to [aergo connect][https://chrome.google.com/webstore/detail/aergo-connect/iopigoikekfcpcapjlkcdlokheickhpc]
-2. Go to [testnet faucet page](https://faucet.aergoscan.io/).
-3. Fill encrypted in `hera/example/key/aergo.properties` with exported one (can check in stdout)
+[aergo connect][https://chrome.google.com/webstore/detail/aergo-connect/iopigoikekfcpcapjlkcdlokheickhpc]
+
+Create
+
+![aergo-connect-new1](./img/aergo-connect-new1.png)
+
+![aergo-connect-new2](./img/aergo-connect-new2.png)
+
+![aergo-connect-new3](./img/aergo-connect-new3.png)
+
+-> Copy account address
+
+Export
+
+![aergo-connect-export1](./img/aergo-connect-export1.png)
+
+![aergo-connect-export2](./img/aergo-connect-export2.png)
+
+![aergo-connect-export3](./img/aergo-connect-export3.png)
+
+-> Copy exported account
+
+#### Get aergo
+
+[testnet faucet page](https://faucet.aergoscan.io/)
+
+Paste created account address
+
+![aergo-faucet1](./img/aergo-faucet-1.png)
+
+![aergo-faucet2](./img/aergo-faucet-2.png)
+
+![aergo-faucet3](./img/aergo-faucet-3.png)
+
+#### Ready account
+
+Fill encrypted in `hera/example/key/aergo.properties` with exported one
+
+![aergo-properties](./img/aergo-properties.png)
 
 ### Run
 
