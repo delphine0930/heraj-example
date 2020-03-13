@@ -4,7 +4,6 @@ A collection of examples using heraj
 
 ## Compatibility
 
-- heraj : 1.2.1
 - jdk : 7 or higher
 
 ## Usage
@@ -13,7 +12,9 @@ A collection of examples using heraj
 
 - Eclipse : Project Explorer -> Import -> Existing Gradle Project -> Select heraj-example -> Finish
 
-### Setup aergokey
+### Prepare account in a testnet (Optional)
+
+If you want examples to use in a testnet (testnet-api.aergo.io:7845), you have to prepare account with aergo.
 
 #### Create & Export Account
 
@@ -53,13 +54,9 @@ Paste created account address
 
 #### Ready account
 
-Fill encrypted in `hera/example/key/aergo.properties` with exported one
+Import encrypted key
 
-![aergo-properties](./img/aergo-properties.png)
-
-### Run
-
-Just all main methods of each classes.
+![import-key](./img/import-key.png)
 
 ## Contribution
 

@@ -9,5 +9,8 @@ bin/
 .project
 .settings/
 
+# intellij
+.idea
+
 # osx
 .DS_Store

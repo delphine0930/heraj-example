@@ -4,4 +4,4 @@
 
 rootProject.name = 'heraj-example'
 
-include ':api-usage'
+include ':core-api'
