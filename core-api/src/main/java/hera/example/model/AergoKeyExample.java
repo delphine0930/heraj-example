@@ -2,7 +2,7 @@
  * @copyright defined in LICENSE.txt
  */
 
-package hera.example.account;
+package hera.example.model;
 
 import hera.api.model.Aer;
 import hera.api.model.BytesValue;

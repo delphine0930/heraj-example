@@ -30,12 +30,13 @@ public class AccountOperationExample {
         .build();
     client.cacheChainIdHash(client.getBlockchainOperation().getChainIdHash());
 
-    // common (maybe)
+    // common key
     AergoKey key = new AergoKeyGenerator().create();
-    AccountAddress address = key.getAddress();
 
     /* get account state */
-    AccountState state = client.getAccountOperation().getState(address);
+    AccountAddress addressToGet = AccountAddress
+        .of("AmNrsAqkXhQfE6sGxTutQkf9ekaYowaJFLekEm8qvDr1RB1AnsiM");
+    AccountState state = client.getAccountOperation().getState(addressToGet);
 
     /* create name */
     TxHash createNameTxHash = client.getAccountOperation()
@@ -58,16 +59,25 @@ public class AccountOperationExample {
     TxHash unStakeTxHash = client.getAccountOperation()
         .unstake(key, Aer.of("10000", Unit.AERGO), 4L);
 
-    /* get state info */
-    StakeInfo stakeInfo = client.getAccountOperation().getStakingInfo(address);
+    /* get stake info */
+    AccountAddress addressToGetStakeInfo = AccountAddress
+        .of("AmNrsAqkXhQfE6sGxTutQkf9ekaYowaJFLekEm8qvDr1RB1AnsiM");
+    StakeInfo stakeInfo = client.getAccountOperation().getStakingInfo(addressToGetStakeInfo);
 
     /* vote */
+
+    // vote to "voteBP" with value "test"
     client.getAccountOperation().vote(key, "voteBP", asList("test"), 5L);
 
+
     /* get vote of specific account */
-    AccountTotalVote voteInfo = client.getAccountOperation().getVotesOf(address);
+    AccountAddress addressToGetVoteInfo = AccountAddress
+        .of("AmNrsAqkXhQfE6sGxTutQkf9ekaYowaJFLekEm8qvDr1RB1AnsiM");
+    AccountTotalVote voteInfo = client.getAccountOperation().getVotesOf(addressToGetVoteInfo);
+
 
     /* get vote result */
+    // get vote info of "voteBP"
     List<ElectedCandidate> elected = client.getAccountOperation()
         .listElected("voteBP", 23);
     System.out.println(elected);
