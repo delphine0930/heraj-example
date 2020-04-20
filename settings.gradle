@@ -5,3 +5,4 @@
 rootProject.name = 'heraj-example'
 
 include ':core-api'
+include ':spring:block-stream'
