@@ -2,9 +2,9 @@
  * @copyright defined in LICENSE.txt
  */
 
-package acktsap.sample.controller;
+package hera.example.controller;
 
-import acktsap.sample.service.TransactionService;
+import hera.example.service.TransactionService;
 import hera.api.model.AccountAddress;
 import hera.api.model.Aer;
 import hera.api.model.TxHash;

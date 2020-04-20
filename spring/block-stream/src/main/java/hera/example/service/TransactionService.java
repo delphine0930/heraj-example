@@ -1,4 +1,4 @@
-package acktsap.sample.service;
+package hera.example.service;
 
 import hera.api.model.AccountAddress;
 import hera.api.model.Aer;

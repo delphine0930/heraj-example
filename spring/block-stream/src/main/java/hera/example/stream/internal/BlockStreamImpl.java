@@ -2,9 +2,9 @@
  * @copyright defined in LICENSE.txt
  */
 
-package acktsap.sample.stream.internal;
+package hera.example.stream.internal;
 
-import acktsap.sample.stream.BlockStream;
+import hera.example.stream.BlockStream;
 import hera.api.model.Block;
 import hera.api.model.StreamObserver;
 import hera.api.model.Subscription;

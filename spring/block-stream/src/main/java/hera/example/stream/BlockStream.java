@@ -2,7 +2,7 @@
  * @copyright defined in LICENSE.txt
  */
 
-package acktsap.sample.stream;
+package hera.example.stream;
 
 import hera.api.model.TxHash;
 import java.util.concurrent.CompletableFuture;

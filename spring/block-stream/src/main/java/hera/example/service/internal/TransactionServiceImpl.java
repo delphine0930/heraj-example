@@ -2,10 +2,10 @@
  * @copyright defined in LICENSE.txt
  */
 
-package acktsap.sample.service.internal;
+package hera.example.service.internal;
 
-import acktsap.sample.service.TransactionService;
-import acktsap.sample.stream.BlockStream;
+import hera.example.stream.BlockStream;
+import hera.example.service.TransactionService;
 import hera.api.model.AccountAddress;
 import hera.api.model.AccountState;
 import hera.api.model.Aer;

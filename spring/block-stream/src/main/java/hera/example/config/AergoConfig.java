@@ -2,7 +2,7 @@
  * @copyright defined in LICENSE.txt
  */
 
-package acktsap.sample.config;
+package hera.example.config;
 
 import hera.api.model.ChainIdHash;
 import hera.api.transaction.NonceProvider;
