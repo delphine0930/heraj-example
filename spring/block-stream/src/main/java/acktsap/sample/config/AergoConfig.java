@@ -10,6 +10,7 @@ import hera.api.transaction.SimpleNonceProvider;
 import hera.client.AergoClient;
 import hera.client.AergoClientBuilder;
 import hera.key.AergoKey;
+import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +39,24 @@ public class AergoConfig {
   }
 
   @Bean
-  public ChainIdHash chainIdHash() {
-    return aergoClient().getBlockchainOperation().getChainIdHash();
+  public Supplier<ChainIdHash> chainIdHashSupplier() {
+    return new Supplier<ChainIdHash>() {
+
+      protected final Object lock = new Object();
+      protected ChainIdHash cache;
+
+      @Override
+      public ChainIdHash get() {
+        if (null == cache) {
+          synchronized (lock) {
+            if (null == cache) {
+              cache = aergoClient().getBlockchainOperation().getChainIdHash();
+            }
+          }
+        }
+        return cache;
+      }
+    };
   }
 
   @Bean

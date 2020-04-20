@@ -14,8 +14,6 @@ import hera.client.AergoClient;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,30 +28,18 @@ class BlockStreamImpl implements BlockStream {
   @Autowired
   protected AergoClient client;
 
-  @PostConstruct
-  protected void init() {
-    subscription = makeNewSubscription();
-  }
-
-  @PreDestroy
-  protected void destroy() {
-    // unsubscribe before destroying
-    if (null != subscription) {
-      subscription.unsubscribe();
-    }
-  }
-
   @Override
   public CompletableFuture<TxHash> submit(final TxHash txHash) {
     // make a subscription if it's in unsubscribed state
-    if (subscription.isUnsubscribed()) {
+    if (null == subscription || subscription.isUnsubscribed()) {
       synchronized (lock) {
-        if (subscription.isUnsubscribed()) {
+        if (null == subscription || subscription.isUnsubscribed()) {
           subscription = makeNewSubscription();
         }
       }
     }
 
+    // be careful of memory leak on network error
     final CompletableFuture<TxHash> future = new CompletableFuture<>();
     hash2Submited.put(txHash, future);
     return future;

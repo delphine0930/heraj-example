@@ -18,7 +18,7 @@ import hera.api.transaction.NonceProvider;
 import hera.client.AergoClient;
 import hera.key.AergoKey;
 import java.util.concurrent.CompletableFuture;
-import javax.annotation.PostConstruct;
+import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,10 @@ import org.springframework.stereotype.Service;
 class TransactionServiceImpl implements TransactionService {
 
   @Autowired
-  protected ChainIdHash chainIdHash;
+  protected Supplier<ChainIdHash> chainIdHashSupplier;
+
+  protected final Object lock = new Object();
+  protected volatile boolean hasBinded = false;
 
   @Autowired
   protected NonceProvider nonceProvider;
@@ -40,19 +43,21 @@ class TransactionServiceImpl implements TransactionService {
   @Autowired
   protected AergoClient aergoClient;
 
-  @PostConstruct
-  protected void init() {
-    // bind nonce of rich key
-    final AccountState state = aergoClient.getAccountOperation()
-        .getState(richKey.getAddress());
-    nonceProvider.bindNonce(state);
-  }
-
   @Override
   public CompletableFuture<TxHash> send(final AccountAddress recipient, final Aer amount) {
+    // bind nonce of rich key once
+    if (!hasBinded) {
+      synchronized (lock) {
+        if (!hasBinded) {
+          bindRichState();
+          hasBinded = true;
+        }
+      }
+    }
+
     // make a transaction
     final RawTransaction rawTransaction = RawTransaction.newBuilder()
-        .chainIdHash(chainIdHash)
+        .chainIdHash(chainIdHashSupplier.get())
         .from(richKey.getAddress())
         .to(recipient)
         .amount(amount)
@@ -68,6 +73,12 @@ class TransactionServiceImpl implements TransactionService {
     aergoClient.getTransactionOperation().commit(signed);
 
     return future;
+  }
+
+  protected void bindRichState() {
+    final AccountState state = aergoClient.getAccountOperation()
+        .getState(richKey.getAddress());
+    nonceProvider.bindNonce(state);
   }
 
 }
