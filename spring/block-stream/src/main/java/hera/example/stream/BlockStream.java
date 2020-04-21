@@ -17,4 +17,11 @@ public interface BlockStream {
    */
   CompletableFuture<TxHash> submit(TxHash txHash);
 
+  /**
+   * Unsubmit submmited transaction hash.
+   *
+   * @param txHash a transaction hash to unsubmit
+   * @return unsubmit result
+   */
+  boolean unsubmit(TxHash txHash);
 }

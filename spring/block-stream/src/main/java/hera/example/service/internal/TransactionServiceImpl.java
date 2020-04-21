@@ -4,8 +4,6 @@
 
 package hera.example.service.internal;
 
-import hera.example.stream.BlockStream;
-import hera.example.service.TransactionService;
 import hera.api.model.AccountAddress;
 import hera.api.model.AccountState;
 import hera.api.model.Aer;
@@ -16,6 +14,8 @@ import hera.api.model.Transaction;
 import hera.api.model.TxHash;
 import hera.api.transaction.NonceProvider;
 import hera.client.AergoClient;
+import hera.example.service.TransactionService;
+import hera.example.stream.BlockStream;
 import hera.key.AergoKey;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -25,11 +25,11 @@ import org.springframework.stereotype.Service;
 @Service
 class TransactionServiceImpl implements TransactionService {
 
-  @Autowired
-  protected Supplier<ChainIdHash> chainIdHashSupplier;
-
   protected final Object lock = new Object();
   protected volatile boolean hasBinded = false;
+
+  @Autowired
+  protected Supplier<ChainIdHash> chainIdHashSupplier;
 
   @Autowired
   protected NonceProvider nonceProvider;
@@ -44,7 +44,7 @@ class TransactionServiceImpl implements TransactionService {
   protected AergoClient aergoClient;
 
   @Override
-  public CompletableFuture<TxHash> send(final AccountAddress recipient, final Aer amount) {
+  public CompletableFuture<TxHash> send(AccountAddress recipient, Aer amount) {
     // bind nonce of rich key once
     if (!hasBinded) {
       synchronized (lock) {
@@ -56,7 +56,7 @@ class TransactionServiceImpl implements TransactionService {
     }
 
     // make a transaction
-    final RawTransaction rawTransaction = RawTransaction.newBuilder()
+    RawTransaction rawTransaction = RawTransaction.newBuilder()
         .chainIdHash(chainIdHashSupplier.get())
         .from(richKey.getAddress())
         .to(recipient)
@@ -64,19 +64,28 @@ class TransactionServiceImpl implements TransactionService {
         .nonce(nonceProvider.incrementAndGetNonce(richKey.getAddress()))
         .fee(Fee.EMPTY)
         .build();
-    final Transaction signed = richKey.sign(rawTransaction);
+    Transaction signed = richKey.sign(rawTransaction);
 
-    // submit tx hash
-    CompletableFuture<TxHash> future = blockStream.submit(signed.getHash());
+    // tx hash
+    TxHash txHash = signed.getHash();
+
+    // submit tx hash before commit
+    CompletableFuture<TxHash> future = blockStream.submit(txHash);
 
     // commit signed tx
-    aergoClient.getTransactionOperation().commit(signed);
+    try {
+      aergoClient.getTransactionOperation().commit(signed);
+    } catch (Exception e) {
+      // unsubmit on commit error to prevent memory leak
+      blockStream.unsubmit(txHash);
+      throw new IllegalStateException(e);
+    }
 
     return future;
   }
 
   protected void bindRichState() {
-    final AccountState state = aergoClient.getAccountOperation()
+    AccountState state = aergoClient.getAccountOperation()
         .getState(richKey.getAddress());
     nonceProvider.bindNonce(state);
   }

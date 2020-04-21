@@ -4,13 +4,13 @@
 
 package hera.example.stream.internal;
 
-import hera.example.stream.BlockStream;
 import hera.api.model.Block;
 import hera.api.model.StreamObserver;
 import hera.api.model.Subscription;
 import hera.api.model.Transaction;
 import hera.api.model.TxHash;
 import hera.client.AergoClient;
+import hera.example.stream.BlockStream;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 class BlockStreamImpl implements BlockStream {
 
+  // WARN: be careful of memory leak by never removed one
   protected final Map<TxHash, CompletableFuture<TxHash>> hash2Submited = new ConcurrentHashMap<>();
 
   protected final Object lock = new Object();
@@ -29,7 +30,7 @@ class BlockStreamImpl implements BlockStream {
   protected AergoClient client;
 
   @Override
-  public CompletableFuture<TxHash> submit(final TxHash txHash) {
+  public CompletableFuture<TxHash> submit(TxHash txHash) {
     // make a subscription if it's in unsubscribed state
     if (null == subscription || subscription.isUnsubscribed()) {
       synchronized (lock) {
@@ -39,22 +40,28 @@ class BlockStreamImpl implements BlockStream {
       }
     }
 
-    // be careful of memory leak on network error
-    final CompletableFuture<TxHash> future = new CompletableFuture<>();
+    // make a non-completed future and keep it
+    CompletableFuture<TxHash> future = new CompletableFuture<>();
     hash2Submited.put(txHash, future);
     return future;
   }
 
+  @Override
+  public boolean unsubmit(TxHash txHash) {
+    return null != hash2Submited.remove(txHash);
+  }
+
   private Subscription<Block> makeNewSubscription() {
-    return client.getBlockOperation().subscribeNewBlock(new StreamObserver<Block>() {
+    StreamObserver<Block> streamObserver = new StreamObserver<Block>() {
+
       @Override
-      public void onNext(final Block block) {
+      public void onNext(Block block) {
         System.out.println("New block: " + block.getHash());
         block.getTransactions().stream().map(Transaction::getHash)
             .forEach(hash -> {
-              final CompletableFuture<TxHash> submitted = hash2Submited.get(hash);
+              // it hash is submitted one, complete it
+              CompletableFuture<TxHash> submitted = hash2Submited.get(hash);
               if (null != submitted) {
-                // complete submited hash
                 System.out.println("Complete submitted hash: " + hash);
                 submitted.complete(hash);
                 hash2Submited.remove(hash);
@@ -63,7 +70,7 @@ class BlockStreamImpl implements BlockStream {
       }
 
       @Override
-      public void onError(final Throwable t) {
+      public void onError(Throwable t) {
         System.err.println("Error: " + t);
       }
 
@@ -71,7 +78,8 @@ class BlockStreamImpl implements BlockStream {
       public void onCompleted() {
         System.err.println("Complete");
       }
-    });
+    };
+    return client.getBlockOperation().subscribeNewBlock(streamObserver);
   }
 
 }

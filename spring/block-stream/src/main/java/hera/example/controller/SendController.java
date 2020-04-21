@@ -4,10 +4,10 @@
 
 package hera.example.controller;
 
-import hera.example.service.TransactionService;
 import hera.api.model.AccountAddress;
 import hera.api.model.Aer;
 import hera.api.model.TxHash;
+import hera.example.service.TransactionService;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +21,12 @@ public class SendController {
   protected TransactionService transactionService;
 
   @GetMapping("/send")
-  public void send(@RequestParam("to") final String recipient) {
+  public void send(@RequestParam("to") String recipient) {
     try {
       System.out.println("Send request to " + recipient);
-      final CompletableFuture<TxHash> future = transactionService
+      CompletableFuture<TxHash> future = transactionService
           .send(AccountAddress.of(recipient), Aer.ONE);
-      final TxHash txHash = future.get();
+      TxHash txHash = future.get();
       System.out.println("== Confirmed: " + txHash);
     } catch (Exception e) {
       throw new IllegalStateException(e);
