@@ -7,11 +7,13 @@ server:
 
 aergo:
   server:
-    # hostname: testnet-api.aergo.io
-    hostname: localhost
+    hostname: testnet-api.aergo.io
     port: 7845
 
   account:
-    address: AmLjs1v2URs1xSitMweA9nXqviK7ty1wF9SqACWniP8xNzHTEcSf
-    wif: 47NKopnsGJrGDuGwVhZw1DCG4BQFRQ3JX7J8hSWwM43cvfDEHdcWa8TCBWEiixe6aTbdBHmaj
-    password: 1234
+    from:
+      address:
+      wif:
+      password:
+    to:
+      address:

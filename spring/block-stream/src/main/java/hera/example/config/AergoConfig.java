@@ -24,10 +24,10 @@ public class AergoConfig {
   @Value("${aergo.server.port}")
   protected String port;
 
-  @Value("${aergo.account.wif}")
+  @Value("${aergo.account.from.wif}")
   protected String walletImportFormat;
 
-  @Value("${aergo.account.password}")
+  @Value("${aergo.account.from.password}")
   protected String password;
 
   @Bean
