@@ -37,4 +37,22 @@ public class SendController {
     }
   }
 
+  @GetMapping("/custom")
+  public void custom(@RequestParam("txpersec") int txPerSec, @RequestParam("sec") int sec) throws InterruptedException {
+    long timeSleep = Math.floorDiv(1000, txPerSec);
+    System.out.println("=========================================================");
+    for(int i = 1; i <= txPerSec * sec; i++) {
+      try {
+        System.out.println(i);
+        AccountAddress recipient = AccountAddress.of(toAddress);
+        CompletableFuture<TxHash> future = transactionService.send(recipient, Aer.ONE);
+//        TxHash txHash = future.get();
+//        System.out.println("== Confirmed: " + txHash);
+      } catch (Exception e) {
+        throw new IllegalStateException(e);
+      }
+      Thread.sleep(timeSleep);
+    }
+  }
+
 }

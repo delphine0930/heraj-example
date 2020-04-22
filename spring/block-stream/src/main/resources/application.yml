@@ -12,8 +12,8 @@ aergo:
 
   account:
     from:
-      address:
-      wif:
-      password:
+      address: AmLjs1v2URs1xSitMweA9nXqviK7ty1wF9SqACWniP8xNzHTEcSf
+      wif: 47NKopnsGJrGDuGwVhZw1DCG4BQFRQ3JX7J8hSWwM43cvfDEHdcWa8TCBWEiixe6aTbdBHmaj
+      password: 1234
     to:
-      address:
+      address: AmLjs1v2URs1xSitMweA9nXqviK7ty1wF9SqACWniP8xNzHTEcSf

@@ -68,6 +68,7 @@ class TransactionServiceImpl implements TransactionService {
 
     // tx hash
     TxHash txHash = signed.getHash();
+    System.out.println("txHash = " + txHash);
 
     // submit tx hash before commit
     CompletableFuture<TxHash> future = blockStream.submit(txHash);
