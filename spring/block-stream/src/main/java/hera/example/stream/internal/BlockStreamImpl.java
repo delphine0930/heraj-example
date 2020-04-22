@@ -57,6 +57,7 @@ class BlockStreamImpl implements BlockStream {
       @Override
       public void onNext(Block block) {
         System.out.println("New block: " + block.getHash());
+        System.out.println("Block time : " + block.getTimestamp());
         block.getTransactions().stream().map(Transaction::getHash)
             .forEach(hash -> {
               // it hash is submitted one, complete it

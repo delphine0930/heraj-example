@@ -17,6 +17,8 @@ import hera.client.AergoClient;
 import hera.example.service.TransactionService;
 import hera.example.stream.BlockStream;
 import hera.key.AergoKey;
+
+import java.sql.Timestamp;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,14 +70,15 @@ class TransactionServiceImpl implements TransactionService {
 
     // tx hash
     TxHash txHash = signed.getHash();
-    System.out.println("txHash = " + txHash);
 
     // submit tx hash before commit
     CompletableFuture<TxHash> future = blockStream.submit(txHash);
 
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     // commit signed tx
     try {
       aergoClient.getTransactionOperation().commit(signed);
+      System.out.println(txHash + "  :  " + timestamp.getTime());
     } catch (Exception e) {
       // unsubmit on commit error to prevent memory leak
       blockStream.unsubmit(txHash);
